@@ -75,7 +75,7 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-medium mb-1">Email</h3>
-                  <p className="text-gray-400">info@mobiledvr.com</p>
+                  <p className="text-gray-400">info@geoidit.com</p>
                 </div>
               </div>
 
@@ -94,7 +94,7 @@ const ContactSection: React.FC = () => {
           <div>
             <form onSubmit={handleSubmit} className="card">
               <h3 className="text-xl font-medium mb-6">Request Information</h3>
-              
+
               <div className="mb-4">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
                 <input
@@ -107,7 +107,7 @@ const ContactSection: React.FC = () => {
                   required
                 />
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
                 <input
@@ -120,7 +120,7 @@ const ContactSection: React.FC = () => {
                   required
                 />
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="company" className="block text-sm font-medium text-gray-400 mb-1">Company</label>
                 <input
@@ -132,7 +132,7 @@ const ContactSection: React.FC = () => {
                   className="w-full px-4 py-2 bg-dark-700 border border-dark-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-white"
                 />
               </div>
-              
+
               <div className="mb-6">
                 <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-1">Message</label>
                 <textarea
@@ -145,7 +145,7 @@ const ContactSection: React.FC = () => {
                   required
                 ></textarea>
               </div>
-              
+
               <button type="submit" className="btn btn-primary w-full flex items-center justify-center">
                 Send Message <Send size={18} className="ml-2" />
               </button>

@@ -18,16 +18,16 @@ const Footer: React.FC = () => {
               Leading provider of advanced mobile digital video recording solutions for fleet security and management.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-600 transition-colors">
+              <a href="https://www.facebook.com/geoidit" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page" className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-600 transition-colors">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-600 transition-colors">
+              <a href="https://x.com/geoidit" target="_blank" rel="noopener noreferrer" aria-label="Visit our Twitter/X profile" className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-600 transition-colors">
                 <X size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-600 transition-colors">
+              <a href="https://lk.linkedin.com/company/geoidit" target="_blank" rel="noopener noreferrer" aria-label="Visit our LinkedIn page" className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-600 transition-colors">
                 <Linkedin size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-600 transition-colors">
+              <a href="https://www.instagram.com/geoid_it" target="_blank" rel="noopener noreferrer" aria-label="Visit our Instagram profile" className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-600 transition-colors">
                 <Instagram size={18} />
               </a>
             </div>
@@ -74,7 +74,7 @@ const Footer: React.FC = () => {
             <div className="flex space-x-6">
               <a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Privacy Policy</a>
               <a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Terms of Service</a>
-              <a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Sitemap</a>
+              <a href="/sitemap.xml" className="text-gray-500 hover:text-gray-300 text-sm">Sitemap</a>
             </div>
           </div>
         </div>
