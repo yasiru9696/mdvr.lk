@@ -1,31 +1,28 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ParticleBackground from './components/ParticleBackground';
 import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
-import FeaturesSection from './components/FeaturesSection';
-import BenefitsSection from './components/BenefitsSection';
-import SolutionsSection from './components/SolutionsSection';
-import TestimonialsSection from './components/TestimonialsSection';
-import ContactSection from './components/ContactSection';
+import HomePage from './components/HomePage';
+import ProductsPage from './components/ProductsPage';
 import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="relative min-h-screen">
-      <ParticleBackground />
-      <div className="content-overlay">
-        <Navbar />
-        <main>
-          <HeroSection />
-          <SolutionsSection />
-          <FeaturesSection />
-          <BenefitsSection />
-          <TestimonialsSection />
-          <ContactSection />
-        </main>
-        <Footer />
+    <Router>
+      <div className="relative min-h-screen">
+        <ParticleBackground />
+        <div className="content-overlay">
+          <Navbar />
+          <main>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/products" element={<ProductsPage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 

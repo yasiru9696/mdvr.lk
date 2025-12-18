@@ -24,3 +24,19 @@ export interface Solution {
   description: string;
   imageUrl: string;
 }
+
+export interface Product {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  channels: number | string;
+  resolution: string;
+  storage: string;
+  features: string[];
+  price: string;
+  imageUrl: string;
+  specifications: {
+    [key: string]: string;
+  };
+}

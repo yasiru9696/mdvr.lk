@@ -9,7 +9,6 @@ import 'swiper/css/autoplay';
 import 'tailwindcss/tailwind.css';
 import ins from '/img/ins.png';
 import cmc from '/img/cmc.png';
-import Lan from '/img/Lan.png';
 import EFL from '/img/EFL.png';
 import O2 from '/img/O2.jpg';
 import mb from '/img/mb.png';
