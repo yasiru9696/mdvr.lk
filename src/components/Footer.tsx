@@ -1,6 +1,6 @@
 import React from 'react';
 import { Facebook, X, Linkedin, Instagram } from 'lucide-react';
-import geoidImg from '/img/geoid.png';
+import geoidImg from '/img/mobile-dvr-logo.png';
 
 const Footer: React.FC = () => {
   return (
@@ -9,8 +9,8 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-5">
           <div>
             <a href="#" className="flex items-center gap-2 mb-3">
-              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-gray-500 to-black-500 flex items-center justify-center">
-                <img src={geoidImg} alt="Geoid Logo" className="h-10 w-auto" />
+              <div className="h-10 w-10 flex items-center justify-center">
+                <img src={geoidImg} alt="Mobile DVR Solutions Logo" className="h-10 w-10 object-contain" />
               </div>
               <span className="text-white font-semibold text-xl">MobileDVR.lk</span>
             </a>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { NavItem } from '../types';
-import geoidImg from '/img/geoid.png';
+import geoidImg from '/img/mobile-dvr-logo.png';
 
 const navItems: NavItem[] = [
   { name: 'Home', href: '/' },
@@ -66,8 +66,8 @@ const Navbar: React.FC = () => {
     >
       <div className="container-custom flex items-center justify-between py-4">
         <Link to="/" className="flex items-center gap-2">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br primary-500 flex items-center justify-center">
-            <img src={geoidImg} alt="Geoid Logo" className="h-10 w-auto" />
+          <div className="h-12 w-12 flex items-center justify-center">
+            <img src={geoidImg} alt="Mobile DVR Solutions Logo" className="h-12 w-12 object-contain" />
           </div>
           <span className="text-white font-semibold text-4xl">MobileDVR</span>
           <span className="text-gray-300 font-rajdhani font-bold text-4xl">.lk</span>

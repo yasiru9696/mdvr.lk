@@ -146,7 +146,6 @@ const ProductsPage: React.FC = () => {
                                     )}
                                 </div>
 
-                                {/* Price & CTA */}
                                 <div className="mt-auto pt-4 border-t border-gray-700">
                                     <div className="flex items-center justify-between mb-4">
                                         <span className="text-lg font-semibold text-primary-400">
@@ -156,19 +155,28 @@ const ProductsPage: React.FC = () => {
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => openProductModal(product)}
-                                            className="flex-1 btn btn-outline text-sm flex items-center justify-center"
-                                        >
+                                            className="flex-1 btn btn-outline text-sm flex items-center justify-center">
                                             <FileText size={16} className="mr-2" />
                                             View Full Specs
                                         </button>
-                                        <a
-                                            href="#contact"
-                                            onClick={(e) => handleHashLinkClick(e, '#contact')}
-                                            className="flex-1 btn btn-primary text-sm flex items-center justify-center"
-                                        >
-                                            <ShoppingCart size={16} className="mr-2" />
-                                            Request Quote
-                                        </a>
+                                        {product.category === 'Cameras & Accessories' ? (
+                                            <a
+                                                href="#contact"
+                                                onClick={(e) => handleHashLinkClick(e, '#contact')}
+                                                className="flex-1 btn btn-primary text-sm flex items-center justify-center"
+                                            >
+                                                <ShoppingCart size={16} className="mr-2" />
+                                                Request Quote
+                                            </a>
+                                        ) : (
+                                            <button
+                                                onClick={() => navigate(`/customize/${product.id}`)}
+                                                className="flex-1 btn btn-primary text-sm flex items-center justify-center"
+                                            >
+                                                <ShoppingCart size={16} className="mr-2" />
+                                                Customize System
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

@@ -30,13 +30,15 @@ export interface Product {
   name: string;
   category: string;
   description: string;
-  channels: number | string;
-  resolution: string;
+  channels?: number | string;
+  resolution?: string;
   storage: string;
   features: string[];
   price: string;
+  priceValue?: number; // Actual price for quotation calculations (not displayed)
   imageUrl: string;
   specifications: {
     [key: string]: string;
   };
+  compatibleWith?: string[]; // IDs of compatible products (for DVR systems)
 }

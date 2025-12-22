@@ -4,6 +4,7 @@ import ParticleBackground from './components/ParticleBackground';
 import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 import ProductsPage from './components/ProductsPage';
+import CustomizationPage from './components/CustomizationPage';
 import Footer from './components/Footer';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/products" element={<ProductsPage />} />
+              <Route path="/customize/:productId" element={<CustomizationPage />} />
             </Routes>
           </main>
           <Footer />
