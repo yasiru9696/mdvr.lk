@@ -112,11 +112,13 @@ const ProductsPage: React.FC = () => {
                                 {/* Key Specs */}
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     {(typeof product.channels === 'number' ? product.channels > 1 : product.channels) && (
-                                        <span className="text-sm text-gray-400">
-                                            {typeof product.channels === 'number' ? `${product.channels} Channels` : product.channels}
-                                        </span>
+                                        <>
+                                            <span className="text-sm text-gray-400">
+                                                {typeof product.channels === 'number' ? `${product.channels} Channels` : product.channels}
+                                            </span>
+                                            <span className="text-sm text-gray-400">•</span>
+                                        </>
                                     )}
-                                    <span className="text-sm text-gray-400">•</span>
                                     <span className="text-sm text-gray-400">{product.resolution}</span>
                                     {product.storage !== 'N/A' && (
                                         <>
@@ -125,9 +127,6 @@ const ProductsPage: React.FC = () => {
                                         </>
                                     )}
                                 </div>
-
-                                {/* Description */}
-                                <p className="text-gray-300 mb-4 line-clamp-3">{product.description}</p>
 
                                 {/* Features Preview */}
                                 <div className="mb-4">
@@ -279,23 +278,36 @@ const ProductsPage: React.FC = () => {
                             </div>
 
                             {/* Price & CTA */}
-                            <div className="flex items-center justify-between p-4 bg-dark-800 rounded-lg">
-                                <div>
-                                    <p className="text-sm text-gray-400">Pricing</p>
-                                    <p className="text-2xl font-bold text-primary-400">{selectedProduct.price}</p>
+                            {selectedProduct.category === 'Cameras & Accessories' ? (
+                                <div className="flex items-center justify-between p-4 bg-dark-800 rounded-lg">
+                                    <div>
+                                        <p className="text-sm text-gray-400">Pricing</p>
+                                        <p className="text-2xl font-bold text-primary-400">{selectedProduct.price}</p>
+                                    </div>
+                                    <a
+                                        href="#contact"
+                                        onClick={(e) => {
+                                            closeProductModal();
+                                            handleHashLinkClick(e, '#contact');
+                                        }}
+                                        className="btn btn-primary flex items-center justify-center"
+                                    >
+                                        <ShoppingCart size={18} className="mr-2" />
+                                        Request a Quote
+                                    </a>
                                 </div>
-                                <a
-                                    href="#contact"
-                                    onClick={(e) => {
+                            ) : (
+                                <button
+                                    onClick={() => {
                                         closeProductModal();
-                                        handleHashLinkClick(e, '#contact');
+                                        navigate(`/customize/${selectedProduct.id}`);
                                     }}
-                                    className="btn btn-primary flex items-center justify-center"
+                                    className="btn btn-primary w-full flex items-center justify-center py-4 text-lg"
                                 >
-                                    <ShoppingCart size={18} className="mr-2" />
-                                    Request a Quote
-                                </a>
-                            </div>
+                                    <ShoppingCart size={20} className="mr-2" />
+                                    Customize Your System
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

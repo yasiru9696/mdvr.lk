@@ -32,7 +32,7 @@ export interface Product {
   description: string;
   channels?: number | string;
   resolution?: string;
-  storage: string;
+  storage?: string;
   features: string[];
   price: string;
   priceValue?: number; // Actual price for quotation calculations (not displayed)

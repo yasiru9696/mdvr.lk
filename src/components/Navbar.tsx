@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { NavItem } from '../types';
-import geoidImg from '/img/mobile-dvr-logo.png';
+import geoidImg from '/img/geoid.png';
 
 const navItems: NavItem[] = [
   { name: 'Home', href: '/' },

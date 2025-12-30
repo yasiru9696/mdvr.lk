@@ -55,6 +55,23 @@ const CustomizationPage: React.FC = () => {
             .reduce((total, a) => total + a.quantity, 0);
     };
 
+    // Helper functions for X3N Mobile DVR System camera counts
+    const getX3NIPCCameraCount = () => {
+        if (selectedSystem?.id !== 'x3n-ai-premium') return 0;
+        const ipcCameraIds = ['1080p-ipc-waterproof-camera', 'dsm-camera-kit'];
+        return selectedAccessories
+            .filter(a => ipcCameraIds.includes(a.product.id))
+            .reduce((total, a) => total + a.quantity, 0);
+    };
+
+    const getX3NAHDCameraCount = () => {
+        if (selectedSystem?.id !== 'x3n-ai-premium') return 0;
+        const ahdCameraIds = ['ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera', 'ca20s-adas-camera'];
+        return selectedAccessories
+            .filter(a => ahdCameraIds.includes(a.product.id))
+            .reduce((total, a) => total + a.quantity, 0);
+    };
+
     const handleAddAccessory = (accessory: Product) => {
         const existing = selectedAccessories.find(a => a.product.id === accessory.id);
         if (existing) {
@@ -87,7 +104,21 @@ const CustomizationPage: React.FC = () => {
 
             // For C6D AI system, limit to 2 external cameras maximum
             const maxQuantity = selectedSystem?.id === 'c6d-ai-basic' ? 2 : 99;
-            if (existing.quantity < maxQuantity) {
+
+            // For X3N: Check camera limits before allowing increment
+            let allowIncrement = true;
+            if (selectedSystem?.id === 'x3n-ai-premium') {
+                const ipcCameraIds = ['1080p-ipc-waterproof-camera'];
+                const ahdCameraIds = ['ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera', 'ca20s-adas-camera'];
+
+                if (ipcCameraIds.includes(accessory.id) && getX3NIPCCameraCount() >= 4) {
+                    allowIncrement = false;
+                } else if (ahdCameraIds.includes(accessory.id) && getX3NAHDCameraCount() >= 4) {
+                    allowIncrement = false;
+                }
+            }
+
+            if (existing.quantity < maxQuantity && allowIncrement) {
                 setSelectedAccessories(selectedAccessories.map(a =>
                     a.product.id === accessory.id
                         ? { ...a, quantity: a.quantity + 1 }
@@ -143,6 +174,67 @@ const CustomizationPage: React.FC = () => {
                     return;
                 }
             }
+
+            // For X3N: Only allow ONE hard drive since it has 1x 2.5" SATA slot
+            const hardDriveIds = ['wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb'];
+            if (selectedSystem?.id === 'x3n-ai-premium' && hardDriveIds.includes(accessory.id)) {
+                // Check if any other hard drive is already selected
+                const hasOtherHardDrive = selectedAccessories.some(a =>
+                    hardDriveIds.includes(a.product.id) && a.product.id !== accessory.id
+                );
+                if (hasOtherHardDrive) {
+                    // Don't add, only one hard drive allowed
+                    return;
+                }
+            }
+
+            // For X3N: Only allow ONE DSM Camera Kit
+            // Note: DSM counts as IPC camera, so it's also checked in IPC limit below
+            if (selectedSystem?.id === 'x3n-ai-premium' && accessory.id === 'dsm-camera-kit') {
+                const hasDSMCam = selectedAccessories.some(a => a.product.id === 'dsm-camera-kit');
+                if (hasDSMCam) {
+                    return; // Max 1 allowed
+                }
+            }
+
+            // For X3N: CA20S ADAS Camera requires DSM Camera Kit and Max 1
+            if (selectedSystem?.id === 'x3n-ai-premium' && accessory.id === 'ca20s-adas-camera') {
+                const hasDSMCam = selectedAccessories.some(a => a.product.id === 'dsm-camera-kit');
+                if (!hasDSMCam) {
+                    // Requires DSM Camera Kit
+                    return;
+                }
+                const hasCA20S = selectedAccessories.some(a => a.product.id === 'ca20s-adas-camera');
+                if (hasCA20S) {
+                    return; // Max 1 allowed
+                }
+            }
+
+            // For X3N: Only allow ONE CP4 Display Kit
+            if (selectedSystem?.id === 'x3n-ai-premium' && accessory.id === 'cp4-display-kit') {
+                const hasCP4 = selectedAccessories.some(a => a.product.id === 'cp4-display-kit');
+                if (hasCP4) {
+                    return; // Max 1 allowed
+                }
+            }
+
+            // For X3N: Camera restrictions (4 AHD + 4 IPC)
+            if (selectedSystem?.id === 'x3n-ai-premium') {
+                const ipcCameraIds = ['1080p-ipc-waterproof-camera', 'dsm-camera-kit'];
+                const ahdCameraIds = ['ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera', 'ca20s-adas-camera'];
+
+                if (ipcCameraIds.includes(accessory.id)) {
+                    if (getX3NIPCCameraCount() >= 4) {
+                        // Don't add, already at max 4 IPC cameras
+                        return;
+                    }
+                } else if (ahdCameraIds.includes(accessory.id)) {
+                    if (getX3NAHDCameraCount() >= 4) {
+                        // Don't add, already at max 4 AHD cameras
+                        return;
+                    }
+                }
+            }
             // Add new accessory
             const newAccessories = [...selectedAccessories, { product: accessory, quantity: 1 }];
 
@@ -171,6 +263,15 @@ const CustomizationPage: React.FC = () => {
     };
 
     const handleRemoveAccessory = (accessoryId: string) => {
+        // If removing DSM Camera Kit from X3N, also remove CA20S ADAS Camera
+        if (selectedSystem?.id === 'x3n-ai-premium' && accessoryId === 'dsm-camera-kit') {
+            const updatedAccessories = selectedAccessories.filter(a =>
+                a.product.id !== accessoryId && a.product.id !== 'ca20s-adas-camera'
+            );
+            setSelectedAccessories(updatedAccessories);
+            return;
+        }
+
         const systemsRequiringCable = ['fs-c6-lite-standard', 'ad-plus-advanced'];
         const dmsAccessoryIds = ['ca29p-dms-camera', 'c29n-dms-camera'];
         const ahdCameraIds = ['ahd-outdoor-camera', '720p-ahd-outdoor-camera'];
@@ -233,6 +334,45 @@ const CustomizationPage: React.FC = () => {
                 // CP7 Display can only have quantity of 1 for AD-PLUS 2.0
                 if (selectedSystem?.id === 'ad-plus-advanced' && accessoryId === 'cp7-display') {
                     return a; // Don't allow quantity changes for CP7 Display
+                }
+
+                // Hard drives can only have quantity of 1 for X3N (single SATA slot)
+                const hardDriveIds = ['wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb'];
+                if (selectedSystem?.id === 'x3n-ai-premium' && hardDriveIds.includes(accessoryId)) {
+                    return a; // Don't allow quantity changes for hard drives
+                }
+
+                // DSM Camera Kit can only have quantity of 1 for X3N
+                if (selectedSystem?.id === 'x3n-ai-premium' && accessoryId === 'dsm-camera-kit') {
+                    return a;
+                }
+
+                // CP4 Display Kit can only have quantity of 1 for X3N
+                if (selectedSystem?.id === 'x3n-ai-premium' && accessoryId === 'cp4-display-kit') {
+                    return a;
+                }
+
+                // CA20S ADAS Camera can only have quantity of 1 for X3N
+                if (selectedSystem?.id === 'x3n-ai-premium' && accessoryId === 'ca20s-adas-camera') {
+                    return a;
+                }
+
+                // For X3N: Camera count restrictions
+                if (selectedSystem?.id === 'x3n-ai-premium') {
+                    const ipcCameraIds = ['1080p-ipc-waterproof-camera', 'dsm-camera-kit'];
+                    const ahdCameraIds = ['ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera', 'ca20s-adas-camera'];
+
+                    if (ipcCameraIds.includes(accessoryId)) {
+                        // If incrementing, check if we would exceed the limit
+                        if (delta > 0 && getX3NIPCCameraCount() >= 4) {
+                            return a;
+                        }
+                    } else if (ahdCameraIds.includes(accessoryId)) {
+                        // If incrementing, check if we would exceed the limit
+                        if (delta > 0 && getX3NAHDCameraCount() >= 4) {
+                            return a;
+                        }
+                    }
                 }
 
                 // AHD Outdoor Cameras can only have quantity of 1 for AD-PLUS 2.0
@@ -301,6 +441,18 @@ const CustomizationPage: React.FC = () => {
         if (systemsRequiringMicroSD.includes(selectedSystem?.id || '')) {
             if (!hasMicroSD) {
                 alert('Please select at least one MicroSD card capacity before requesting a quote.');
+                return;
+            }
+        }
+
+        // Check if Hard Drive is required and selected for X3N system
+        const hardDriveIds = ['wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb'];
+        const hasHardDrive = selectedAccessories.some(a => hardDriveIds.includes(a.product.id));
+
+        // For X3N AI Mobile DVR System: at least 1 hard drive is required
+        if (selectedSystem?.id === 'x3n-ai-premium') {
+            if (!hasHardDrive) {
+                alert('Please select at least one hard drive before requesting a quote.');
                 return;
             }
         }
@@ -445,6 +597,15 @@ const CustomizationPage: React.FC = () => {
                                                                     ahdCameraIds.includes(a.product.id) && a.product.id !== accessory.id
                                                                 );
 
+                                                            // Check if this is a hard drive and if another hard drive is already selected for X3N
+                                                            const hardDriveIds = ['wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb'];
+                                                            const isHardDrive = hardDriveIds.includes(accessory.id);
+                                                            const hasOtherHardDrive = selectedSystem?.id === 'x3n-ai-premium' &&
+                                                                isHardDrive &&
+                                                                selectedAccessories.some(a =>
+                                                                    hardDriveIds.includes(a.product.id) && a.product.id !== accessory.id
+                                                                );
+
                                                             // For F6N: Check camera restrictions
                                                             let f6nRestriction = '';
                                                             if (selectedSystem?.id === 'f6n-mobile-dvr') {
@@ -467,19 +628,38 @@ const CustomizationPage: React.FC = () => {
                                                                 }
                                                             }
 
-                                                            const isDisabled = microSDFull || hasOtherAHDCamera || !!f6nRestriction;
+                                                            // For X3N: CA20S requires DSM Kit
+                                                            let x3nRestriction = '';
+                                                            if (selectedSystem?.id === 'x3n-ai-premium') {
+                                                                if (accessory.id === 'ca20s-adas-camera') {
+                                                                    const hasDSMCam = selectedAccessories.some(a => a.product.id === 'dsm-camera-kit');
+                                                                    if (!hasDSMCam) {
+                                                                        x3nRestriction = 'Requires DSM Camera Kit';
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            const isDisabled = microSDFull || hasOtherAHDCamera || hasOtherHardDrive || !!f6nRestriction || !!x3nRestriction;
                                                             const buttonText = microSDFull
                                                                 ? 'Max 2 MicroSD Cards'
+
                                                                 : hasOtherAHDCamera
                                                                     ? 'Only 1 AHD Camera Allowed'
-                                                                    : f6nRestriction
-                                                                        ? f6nRestriction
-                                                                        : 'Add to Configuration';
+                                                                    : hasOtherHardDrive
+                                                                        ? 'Only 1 Hard Drive Allowed'
+                                                                        : x3nRestriction
+                                                                            ? x3nRestriction
+                                                                            : f6nRestriction
+                                                                                ? f6nRestriction
+                                                                                : 'Add to Configuration';
+
+                                                            // Check if CA20S limit reached (max 1)
+                                                            const isCA20SMaxed = selectedSystem?.id === 'x3n-ai-premium' && accessory.id === 'ca20s-adas-camera' && isSelected;
 
                                                             return (
                                                                 <button
                                                                     onClick={() => handleAddAccessory(accessory)}
-                                                                    disabled={isDisabled}
+                                                                    disabled={isDisabled || isCA20SMaxed}
                                                                     className="px-3 py-1.5 bg-primary-500 text-white text-sm rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                                                 >
                                                                     <Plus size={12} className="mr-1 inline" />
@@ -491,7 +671,7 @@ const CustomizationPage: React.FC = () => {
                                                         <div className="flex items-center gap-2">
                                                             <button
                                                                 onClick={() => handleUpdateQuantity(accessory.id, -1)}
-                                                                disabled={quantity <= 1 || accessory.id === 'camera-extended-cable' || (['ca29p-dms-camera', 'c29n-dms-camera'].includes(accessory.id) && ['fs-c6-lite-standard', 'ad-plus-advanced'].includes(selectedSystem?.id || '')) || (accessory.id === 'cp7-display' && selectedSystem?.id === 'ad-plus-advanced') || (['ahd-outdoor-camera', '720p-ahd-outdoor-camera'].includes(accessory.id) && selectedSystem?.id === 'ad-plus-advanced') || (accessory.id === '1080p-ipc-waterproof-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (['ca29p-dms-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera'].includes(accessory.id) && selectedSystem?.id === 'f6n-mobile-dvr')}
+                                                                disabled={quantity <= 1 || accessory.id === 'camera-extended-cable' || ['ca29p-dms-camera', 'c29n-dms-camera'].includes(accessory.id) || (accessory.id === 'cp7-display' && selectedSystem?.id === 'ad-plus-advanced') || (['ahd-outdoor-camera', '720p-ahd-outdoor-camera'].includes(accessory.id) && selectedSystem?.id === 'ad-plus-advanced') || (accessory.id === '1080p-ipc-waterproof-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (accessory.id === 'ca29p-dms-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (['wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb'].includes(accessory.id) && selectedSystem?.id === 'x3n-ai-premium') || (accessory.id === 'dsm-camera-kit' && selectedSystem?.id === 'x3n-ai-premium') || (accessory.id === 'cp4-display-kit' && selectedSystem?.id === 'x3n-ai-premium') || (accessory.id === 'ca20s-adas-camera' && selectedSystem?.id === 'x3n-ai-premium')}
                                                                 className="p-2 hover:bg-dark-700 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                                                             >
                                                                 <Minus size={16} />
@@ -501,7 +681,7 @@ const CustomizationPage: React.FC = () => {
                                                             </span>
                                                             <button
                                                                 onClick={() => handleUpdateQuantity(accessory.id, 1)}
-                                                                disabled={quantity >= maxQuantity || accessory.id === 'camera-extended-cable' || (['ca29p-dms-camera', 'c29n-dms-camera'].includes(accessory.id) && ['fs-c6-lite-standard', 'ad-plus-advanced'].includes(selectedSystem?.id || '')) || (accessory.id === 'cp7-display' && selectedSystem?.id === 'ad-plus-advanced') || (['ahd-outdoor-camera', '720p-ahd-outdoor-camera'].includes(accessory.id) && selectedSystem?.id === 'ad-plus-advanced') || (accessory.id === '1080p-ipc-waterproof-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (['ca29p-dms-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera'].includes(accessory.id) && selectedSystem?.id === 'f6n-mobile-dvr' && getF6NAHDCameraCount() >= 4) || (['kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'].includes(accessory.id) && ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr'].includes(selectedSystem?.id || '') && getTotalMicroSDCount() >= 2)}
+                                                                disabled={quantity >= maxQuantity || accessory.id === 'camera-extended-cable' || ['ca29p-dms-camera', 'c29n-dms-camera'].includes(accessory.id) || (accessory.id === 'cp7-display' && selectedSystem?.id === 'ad-plus-advanced') || (['ahd-outdoor-camera', '720p-ahd-outdoor-camera'].includes(accessory.id) && selectedSystem?.id === 'ad-plus-advanced') || (accessory.id === '1080p-ipc-waterproof-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (['wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb'].includes(accessory.id) && selectedSystem?.id === 'x3n-ai-premium') || (['ca29p-dms-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera'].includes(accessory.id) && selectedSystem?.id === 'f6n-mobile-dvr' && getF6NAHDCameraCount() >= 4) || (['kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'].includes(accessory.id) && ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr'].includes(selectedSystem?.id || '') && getTotalMicroSDCount() >= 2) || (accessory.id === 'dsm-camera-kit' && selectedSystem?.id === 'x3n-ai-premium') || (accessory.id === 'cp4-display-kit' && selectedSystem?.id === 'x3n-ai-premium') || (accessory.id === 'ca20s-adas-camera' && selectedSystem?.id === 'x3n-ai-premium')}
                                                                 className="p-2 hover:bg-dark-700 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                                                             >
                                                                 <Plus size={16} />
@@ -552,7 +732,7 @@ const CustomizationPage: React.FC = () => {
                                                 <div className="flex items-center gap-2">
                                                     <button
                                                         onClick={() => handleUpdateQuantity(acc.product.id, -1)}
-                                                        disabled={acc.product.id === 'camera-extended-cable' || (['ca29p-dms-camera', 'c29n-dms-camera'].includes(acc.product.id) && ['fs-c6-lite-standard', 'ad-plus-advanced'].includes(selectedSystem?.id || '')) || (acc.product.id === 'cp7-display' && selectedSystem?.id === 'ad-plus-advanced') || (['ahd-outdoor-camera', '720p-ahd-outdoor-camera'].includes(acc.product.id) && selectedSystem?.id === 'ad-plus-advanced') || (acc.product.id === '1080p-ipc-waterproof-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (['ca29p-dms-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera'].includes(acc.product.id) && selectedSystem?.id === 'f6n-mobile-dvr')}
+                                                        disabled={acc.quantity <= 1 || acc.product.id === 'camera-extended-cable' || ['ca29p-dms-camera', 'c29n-dms-camera'].includes(acc.product.id) || (acc.product.id === 'cp7-display' && selectedSystem?.id === 'ad-plus-advanced') || (['ahd-outdoor-camera', '720p-ahd-outdoor-camera'].includes(acc.product.id) && selectedSystem?.id === 'ad-plus-advanced') || (acc.product.id === '1080p-ipc-waterproof-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (acc.product.id === 'ca29p-dms-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (['wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb'].includes(acc.product.id) && selectedSystem?.id === 'x3n-ai-premium') || (acc.product.id === 'dsm-camera-kit' && selectedSystem?.id === 'x3n-ai-premium') || (acc.product.id === 'cp4-display-kit' && selectedSystem?.id === 'x3n-ai-premium') || (acc.product.id === 'ca20s-adas-camera' && selectedSystem?.id === 'x3n-ai-premium')}
                                                         className="p-1 hover:bg-dark-700 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                                                     >
                                                         <Minus size={14} />
@@ -560,7 +740,7 @@ const CustomizationPage: React.FC = () => {
                                                     <span className="text-primary-400 min-w-[20px] text-center">x{acc.quantity}</span>
                                                     <button
                                                         onClick={() => handleUpdateQuantity(acc.product.id, 1)}
-                                                        disabled={acc.product.id === 'camera-extended-cable' || (['ca29p-dms-camera', 'c29n-dms-camera'].includes(acc.product.id) && ['fs-c6-lite-standard', 'ad-plus-advanced'].includes(selectedSystem?.id || '')) || (acc.product.id === 'cp7-display' && selectedSystem?.id === 'ad-plus-advanced') || (['ahd-outdoor-camera', '720p-ahd-outdoor-camera'].includes(acc.product.id) && selectedSystem?.id === 'ad-plus-advanced') || (acc.product.id === '1080p-ipc-waterproof-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (['ca29p-dms-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera'].includes(acc.product.id) && selectedSystem?.id === 'f6n-mobile-dvr' && getF6NAHDCameraCount() >= 4) || (['kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'].includes(acc.product.id) && ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr'].includes(selectedSystem?.id || '') && getTotalMicroSDCount() >= 2)}
+                                                        disabled={(selectedSystem?.id === 'c6d-ai-basic' && acc.quantity >= 2) || acc.product.id === 'camera-extended-cable' || ['ca29p-dms-camera', 'c29n-dms-camera'].includes(acc.product.id) || (acc.product.id === 'cp7-display' && selectedSystem?.id === 'ad-plus-advanced') || (['ahd-outdoor-camera', '720p-ahd-outdoor-camera'].includes(acc.product.id) && selectedSystem?.id === 'ad-plus-advanced') || (acc.product.id === '1080p-ipc-waterproof-camera' && selectedSystem?.id === 'f6n-mobile-dvr') || (['wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb'].includes(acc.product.id) && selectedSystem?.id === 'x3n-ai-premium') || (['ca29p-dms-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera'].includes(acc.product.id) && selectedSystem?.id === 'f6n-mobile-dvr' && getF6NAHDCameraCount() >= 4) || (['kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'].includes(acc.product.id) && ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr'].includes(selectedSystem?.id || '') && getTotalMicroSDCount() >= 2) || (acc.product.id === 'dsm-camera-kit' && selectedSystem?.id === 'x3n-ai-premium') || (acc.product.id === 'cp4-display-kit' && selectedSystem?.id === 'x3n-ai-premium') || (acc.product.id === 'ca20s-adas-camera' && selectedSystem?.id === 'x3n-ai-premium')}
                                                         className="p-1 hover:bg-dark-700 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                                                     >
                                                         <Plus size={14} />

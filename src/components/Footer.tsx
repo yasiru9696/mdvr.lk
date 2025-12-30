@@ -1,6 +1,6 @@
 import React from 'react';
 import { Facebook, X, Linkedin, Instagram } from 'lucide-react';
-import geoidImg from '/img/mobile-dvr-logo.png';
+import geoidImg from '/img/geoid.png';
 
 const Footer: React.FC = () => {
   return (
