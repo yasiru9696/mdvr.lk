@@ -140,13 +140,19 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                     {/* Company Header */}
                     <div className="flex justify-between items-start mb-8">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-800 mb-2">Mobile DVR Solutions</h1>
-                            <p className="text-sm text-gray-600">Professional Vehicle Surveillance Systems</p>
+                            <img
+                                src="/geoid-logo.png"
+                                alt="GEOID Information Technologies"
+                                className="h-12 mb-3"
+                            />
+                            <p className="text-sm font-semibold text-gray-700">Geoid Information Technologies (Pvt) Ltd</p>
+                            <p className="text-sm text-gray-600">No 192/2, Mulleriyawa North,</p>
+                            <p className="text-sm text-gray-600">Mulleriyawa New Town,</p>
                             <p className="text-sm text-gray-600">Sri Lanka</p>
                         </div>
                         <div className="text-right">
-                            <h2 className="text-3xl font-bold text-gray-700 mb-2">Estimate</h2>
-                            <p className="text-sm text-gray-600"># {estimateNumber}</p>
+                            <h2 className="text-4xl font-light text-gray-600 mb-2">Estimate</h2>
+                            <p className="text-sm text-gray-500"># {estimateNumber}</p>
                         </div>
                     </div>
 
@@ -241,7 +247,7 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                         <h4 className="font-semibold text-gray-700 mb-2">Notes:</h4>
                         <ol className="text-xs text-gray-600 space-y-1 list-decimal list-inside">
                             <li>50% advance payment is required. Delivery will be made within 4 weeks of receiving the advance payment.</li>
-                            <li>The monthly subscription fee will be Rs 1,500.00 per vehicle, including VAT and other applicable charges. (The data SIM card should be provided by the customer)</li>
+                            <li>The monthly subscription fee will be Rs 1,500.00 per vehicle, excluding VAT and other applicable charges. (The data SIM card should be provided by the customer)</li>
                             <li>Transportation charges will apply for installations conducted outside our workshop. The charges are as follows:
                                 <ul className="ml-6 mt-1 list-disc list-inside">
                                     <li>Bolero: Rs. 90/- per kilometer</li>
