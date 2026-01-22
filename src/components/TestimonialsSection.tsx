@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore from 'swiper';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
@@ -14,7 +14,6 @@ import O2 from '/img/O2.jpg';
 import mb from '/img/mb.png';
 import sunmatch from '/img/sunmatch.jpg';
 import inse from '/img/inse.png';
-import { a } from 'framer-motion/client';
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -103,6 +102,51 @@ const testimonials = [
   }
 ];
 
+interface TestimonialCardProps {
+  testimonial: {
+    quote: string;
+    name: string;
+    role: string;
+    company: string;
+  };
+}
+
+const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const maxLength = 200;
+  const shouldTruncate = testimonial.quote.length > maxLength;
+
+  const displayText = isExpanded || !shouldTruncate
+    ? testimonial.quote
+    : testimonial.quote.substring(0, maxLength) + '...';
+
+  return (
+    <div className="card relative flex flex-col">
+      <div className="absolute top-6 left-4 text-5xl text-primary-500 opacity-20">"</div>
+      <div className="flex-grow">
+        <p className="text-gray-300 mb-2 relative z-10">{displayText}</p>
+        {shouldTruncate && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-primary-500 hover:text-primary-400 text-sm font-medium mb-4 transition-colors"
+          >
+            {isExpanded ? 'See Less' : 'See More'}
+          </button>
+        )}
+      </div>
+      <div className="flex items-center mt-4">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center">
+          <span className="text-white font-bold">{testimonial.name.charAt(0)}</span>
+        </div>
+        <div className="ml-4">
+          <p className="font-medium">{testimonial.name}</p>
+          <p className="text-sm text-gray-400">{testimonial.role}, {testimonial.company}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const TestimonialsSection: React.FC = () => {
   return (
     <div className="bg-dark-900 bg-transparent relative py-5">
@@ -115,19 +159,7 @@ const TestimonialsSection: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="card relative">
-              <div className="absolute top-6 left-4 text-5xl text-primary-500 opacity-20">"</div>
-              <p className="text-gray-300 mb-6 relative z-10">{testimonial.quote}</p>
-              <div className="flex items-center">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center">
-                  <span className="text-white font-bold">{testimonial.name.charAt(0)}</span>
-                </div>
-                <div className="ml-4">
-                  <p className="font-medium">{testimonial.name}</p>
-                  <p className="text-sm text-gray-400">{testimonial.role}, {testimonial.company}</p>
-                </div>
-              </div>
-            </div>
+            <TestimonialCard key={index} testimonial={testimonial} />
           ))}
         </div>
       </div>
