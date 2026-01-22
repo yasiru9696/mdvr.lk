@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { products } from '../data/products';
 import { Product } from '../types';
-import { Check, ShoppingCart, Plus, Minus, X, Package } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, X, Package } from 'lucide-react';
 import EstimateModal from './EstimateModal';
 
 interface SelectedAccessory {
@@ -458,10 +458,6 @@ const CustomizationPage: React.FC = () => {
         }
 
         setShowEstimateModal(true);
-    };
-
-    const isAccessorySelected = (accessoryId: string) => {
-        return selectedAccessories.some(a => a.product.id === accessoryId);
     };
 
     return (
