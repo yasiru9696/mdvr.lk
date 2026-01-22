@@ -12,12 +12,9 @@ import cmc from '/img/cmc.png';
 import EFL from '/img/EFL.png';
 import O2 from '/img/O2.jpg';
 import mb from '/img/mb.png';
-import Fer from '/img/Fer.png';
 import sunmatch from '/img/sunmatch.jpg';
-import uni from '/img/uni.jpg';
 import inse from '/img/inse.png';
-import jjm from '/img/jjm.jpg';
-import lanw from '/img/lanw.jpg';
+import { a } from 'framer-motion/client';
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -87,22 +84,22 @@ const InsightsSection: React.FC = () => {
 
 const testimonials = [
   {
-    quote: "The Mobile DVR solution has transformed how we monitor our fleet. The HD cameras and cloud backup capabilities give us peace of mind and have significantly reduced incident disputes.",
-    name: "Amal Perera",
-    role: "Fleet Manager",
-    company: "Amal Transport Services"
+    quote: "Since 2014, we have partnered with Geoid Information Technologies (Pvt) Ltd for MDVR surveillance systems, including DMS and ADAS solutions, with consistently reliable performance and high-quality implementation. They were instrumental in supporting Linde to deliver several first of their kind transport safety digitalization projects in Sri Lanka, setting new benchmarks for industry best practices in the country. Their expertise and commitment make them a trusted long term partner.",
+    name: "Thusitha Yahampath",
+    role: "Head of Distribution",
+    company: "Ceylon Oxygen Ltd (LINDE Group)"
   },
   {
-    quote: "Implementation was seamless and the support team has been exceptional. Our drivers feel more secure knowing the system is in place, and we've seen a notable improvement in safety metrics.",
-    name: "Thusith Jayasinghe",
-    role: "Operations Director",
-    company: "Ceylon Nitrogen Limited"
+    quote: "We are extremely satisfied with the services provided by Geoid Information Technologies (Pvt) Ltd. They installed GPS systems with advanced audio and video recording features, and the entire process was handled efficiently and professionally. Their service team was very quick, supportive, and exceptionally friendly throughout the installation and after-sales support. The product quality, features, and reliability are excellent, and we highly recommend Geoid Information Technologies for their outstanding technology solutions and customer service.",
+    name: "Menaka Senarathna",
+    role: "Chief Operating Officer",
+    company: "Marino Leisure Holdings Pvt Ltd"
   },
   {
-    quote: "The integration with our existing GPS system was flawless. Having synchronized video and location data has been invaluable for our delivery documentation and customer service.",
-    name: "Shan Ratnayake",
-    role: "Technology Officer",
-    company: "ELF Global Logistics"
+    quote: "We are pleased to express our satisfaction with the overall system performance and the quality of service provided. The system has consistently demonstrated reliable performance, meeting our operational requirements efficiently and without any interruption. The required installations were carried out professionally, adhering to agreed timelines and quality standards. The technical team displayed a strong understanding of the system requirements, ensuring proper configuration and seamless integration with our operational requirements. In terms of reliability, the system provided to us has proven to be stable and dependable, contributing positively to our day-to-day processes. Any support requests or clarifications were addressed promptly and effectively, reflecting a high level of customer service and technical competence.Overall, we are satisfied with the system performance, installation quality, and the level of service provided, and we would not hesitate to recommend their solutions and services to other organizations.",
+    name: "Tuan Zafraan",
+    role: "Assistant Manager  - Fleet Maintenance & Admin",
+    company: "EFL-Transport (Pvt) Ltd"
   }
 ];
 
