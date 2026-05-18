@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
+
+@layer base {
+  body {
+    @apply bg-dark-950 text-white font-sans overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
+  h1 {
+    font-size: 2.25rem; /* text-4xl */
+    line-height: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    h1 {
+      font-size: 3rem; /* sm:text-5xl */
+      line-height: 1;
+    }
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 3.75rem; /* md:text-6xl */
+      line-height: 1;
+    }
+  }
+
+  h2 {
+    @apply text-3xl sm:text-4xl md:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl sm:text-3xl;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply px-6 py-3 rounded-md font-medium transition-all duration-300 inline-block;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-600 hover:bg-secondary-700 text-white;
+  }
+
+  .btn-accent {
+    @apply bg-accent-500 hover:bg-accent-600 text-white;
+  }
+
+  .btn-outline {
+    @apply border-2 border-white hover:bg-white hover:text-dark-900;
+  }
+
+  .section {
+    @apply py-16 md:py-24;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-secondary-400;
+  }
+
+  .card {
+    @apply bg-dark-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
+  }
+
+  .nav-link {
+    @apply relative px-2 py-1 text-white/80 hover:text-white transition-colors duration-300;
+  }
+
+  .nav-link::after {
+    @apply content-[''] absolute left-0 bottom-0 w-0 h-0.5 bg-primary-400 transition-all duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+}
+
+.particles-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.content-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+.transparent-header {
+  background: rgba(5, 5, 5, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.feature-icon-container {
+  @apply relative w-6 h-6 flex items-center justify-center rounded-full;
+}
+
+.feature-icon-container::before {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-full rounded-full bg-gradient-to-br from-primary-400/30 to-secondary-400/30 blur-sm;
+}
+
+.feature-icon-container svg {
+  @apply relative z-20;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #88bf22 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #88bf22 !important;  /* your active bullet color */
+}
