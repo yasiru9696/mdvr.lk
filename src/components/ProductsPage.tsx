@@ -93,11 +93,11 @@ const ProductsPage: React.FC = () => {
                                 key={product.id}
                                 className="card group hover:border-primary-500/50 transition-all duration-300">
                                 {/* Product Image */}
-                                <div className="aspect-video overflow-hidden rounded-lg mb-4">
+                                <div className="aspect-video overflow-hidden rounded-lg mb-4 bg-dark-800">
                                     <img
                                         src={product.imageUrl}
                                         alt={product.name}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
                                     />
                                 </div>
 
@@ -213,11 +213,11 @@ const ProductsPage: React.FC = () => {
                         {/* Modal Content - Scrollable */}
                         <div className="p-6 overflow-y-auto">
                             {/* Product Image */}
-                            <div className="aspect-video overflow-hidden rounded-lg mb-6">
+                            <div className="aspect-video overflow-hidden rounded-lg mb-6 bg-dark-800">
                                 <img
                                     src={selectedProduct.imageUrl}
                                     alt={selectedProduct.name}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain p-4"
                                 />
                             </div>
 

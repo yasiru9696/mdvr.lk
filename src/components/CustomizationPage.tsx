@@ -45,10 +45,16 @@ const CustomizationPage: React.FC = () => {
             .reduce((total, a) => total + a.quantity, 0);
     };
 
+    const getMaxMicroSDCount = (systemId: string) => {
+        const singleCard = ['jc181-dual-channel-dash-cam', 'jc182-4g-mini-dash-cam'];
+        if (singleCard.includes(systemId)) return 1;
+        return 2;
+    };
+
     // Helper function to calculate total MicroSD card count for systems that support multiple cards
     const getTotalMicroSDCount = () => {
-        const systemsWithMultipleMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr'];
-        if (!systemsWithMultipleMicroSD.includes(selectedSystem?.id || '')) return 0;
+        const systemsWithMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr', 'jc181-dual-channel-dash-cam', 'jc182-4g-mini-dash-cam'];
+        if (!systemsWithMicroSD.includes(selectedSystem?.id || '')) return 0;
         const microsdIds = ['kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'];
         return selectedAccessories
             .filter(a => microsdIds.includes(a.product.id))
@@ -93,11 +99,11 @@ const CustomizationPage: React.FC = () => {
 
             // For systems with multiple MicroSD support: Check total MicroSD count before allowing increment
             const microsdIds = ['kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'];
-            const systemsWithMultipleMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr'];
-            if (systemsWithMultipleMicroSD.includes(selectedSystem?.id || '') && microsdIds.includes(accessory.id)) {
+            const systemsWithMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr', 'jc181-dual-channel-dash-cam', 'jc182-4g-mini-dash-cam'];
+            if (systemsWithMicroSD.includes(selectedSystem?.id || '') && microsdIds.includes(accessory.id)) {
                 const totalMicroSDCount = getTotalMicroSDCount();
-                if (totalMicroSDCount >= 2) {
-                    // Don't increment, already at max 2 total MicroSD cards
+                if (totalMicroSDCount >= getMaxMicroSDCount(selectedSystem?.id || '')) {
+                    // Don't increment, already at max allowed MicroSD cards
                     return;
                 }
             }
@@ -126,15 +132,14 @@ const CustomizationPage: React.FC = () => {
                 ));
             }
         } else {
-            // MicroSD cards - all systems can have up to 2 total cards from any combination
+            // MicroSD cards - check capacity constraints
             const microsdIds = ['kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'];
-            const systemsRequiringMicroSD = ['c6d-ai-basic', 'fs-c6-lite-standard', 'ad-plus-advanced', 'f6n-mobile-dvr'];
+            const systemsRequiringMicroSD = ['c6d-ai-basic', 'fs-c6-lite-standard', 'ad-plus-advanced', 'f6n-mobile-dvr', 'jc181-dual-channel-dash-cam', 'jc182-4g-mini-dash-cam'];
 
             if (systemsRequiringMicroSD.includes(selectedSystem?.id || '') && microsdIds.includes(accessory.id)) {
-                // All systems: allow up to 2 total MicroSD cards from any combination
                 const totalMicroSDCount = getTotalMicroSDCount();
-                if (totalMicroSDCount >= 2) {
-                    // Don't add, already at max 2 total MicroSD cards
+                if (totalMicroSDCount >= getMaxMicroSDCount(selectedSystem?.id || '')) {
+                    // Don't add, already at max allowed MicroSD cards
                     return;
                 }
             }
@@ -408,13 +413,14 @@ const CustomizationPage: React.FC = () => {
                 // MicroSD cards quantity limits
                 const microsdIds = ['kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'];
                 if (microsdIds.includes(accessoryId)) {
-                    const systemsWithMultipleMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr'];
-                    if (systemsWithMultipleMicroSD.includes(selectedSystem?.id || '')) {
-                        // All systems: Maximum 2 total MicroSD cards across all capacities
+                    const systemsWithMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr', 'jc181-dual-channel-dash-cam', 'jc182-4g-mini-dash-cam'];
+                    if (systemsWithMicroSD.includes(selectedSystem?.id || '')) {
+                        // All systems: Maximum allowed MicroSD cards across all capacities
                         const totalMicroSDCount = getTotalMicroSDCount();
+                        const maxAllowed = getMaxMicroSDCount(selectedSystem?.id || '');
                         // If incrementing, check if we would exceed the limit
-                        if (delta > 0 && totalMicroSDCount >= 2) {
-                            return a; // Don't allow increment, already at max 2 total
+                        if (delta > 0 && totalMicroSDCount >= maxAllowed) {
+                            return a; // Don't allow increment, already at max allowed
                         }
                         // Allow decrement or increment if under limit
                         const newQuantity = Math.max(1, a.quantity + delta);
@@ -437,7 +443,7 @@ const CustomizationPage: React.FC = () => {
         const hasMicroSD = selectedAccessories.some(a => microsdIds.includes(a.product.id));
 
         // For all systems that support MicroSD: at least 1 card is required
-        const systemsRequiringMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr'];
+        const systemsRequiringMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr', 'jc181-dual-channel-dash-cam', 'jc182-4g-mini-dash-cam'];
         if (systemsRequiringMicroSD.includes(selectedSystem?.id || '')) {
             if (!hasMicroSD) {
                 alert('Please select at least one MicroSD card capacity before requesting a quote.');
@@ -578,11 +584,11 @@ const CustomizationPage: React.FC = () => {
                                                             // Check if this is a MicroSD and if total count is at max
                                                             const microsdIds = ['kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'];
                                                             const isMicroSD = microsdIds.includes(accessory.id);
-                                                            const systemsWithMultipleMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr'];
-                                                            // For all systems with multiple MicroSD support, check if total count is at max 2
-                                                            const microSDFull = systemsWithMultipleMicroSD.includes(selectedSystem?.id || '') &&
+                                                            const systemsWithMicroSD = ['fs-c6-lite-standard', 'c6d-ai-basic', 'ad-plus-advanced', 'f6n-mobile-dvr', 'jc181-dual-channel-dash-cam', 'jc182-4g-mini-dash-cam'];
+                                                            // Check if total count is at max allowed MicroSD cards
+                                                            const microSDFull = systemsWithMicroSD.includes(selectedSystem?.id || '') &&
                                                                 isMicroSD &&
-                                                                getTotalMicroSDCount() >= 2;
+                                                                getTotalMicroSDCount() >= getMaxMicroSDCount(selectedSystem?.id || '');
 
                                                             // Check if this is an AHD camera and if another AHD camera is already selected
                                                             const ahdCameraIds = ['ahd-outdoor-camera', '720p-ahd-outdoor-camera'];
@@ -655,7 +661,7 @@ const CustomizationPage: React.FC = () => {
 
                                                             const isDisabled = microSDFull || hasOtherAHDCamera || hasOtherHardDrive || !!f6nRestriction || !!x3nRestriction;
                                                             const buttonText = microSDFull
-                                                                ? 'Max 2 MicroSD Cards'
+                                                                ? `Max ${getMaxMicroSDCount(selectedSystem?.id || '')} MicroSD Card${getMaxMicroSDCount(selectedSystem?.id || '') > 1 ? 's' : ''}`
 
                                                                 : hasOtherAHDCamera
                                                                     ? 'Only 1 AHD Camera Allowed'

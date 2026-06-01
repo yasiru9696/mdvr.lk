@@ -28,7 +28,7 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
 
     // Calculate installation fee based on system type
     const getInstallationFee = (systemId: string): number => {
-        const basicSystemIds = ['c6d-ai-basic', 'fs-c6-lite-standard', 'ad-plus-advanced'];
+        const basicSystemIds = ['c6d-ai-basic', 'fs-c6-lite-standard', 'ad-plus-advanced', 'jc181-dual-channel-dash-cam', 'jc182-4g-mini-dash-cam'];
         const advancedSystemIds = ['f6n-mobile-dvr', 'x3n-ai-premium'];
 
         if (basicSystemIds.includes(systemId)) {
