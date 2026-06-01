@@ -16,15 +16,15 @@ const adasDetails = [
   { text: "Forward Collision Warning (FCW): Alerts the driver to potential front-end collisions.", imageUrl: FCW, videoId: "1094598156" },
   { text: "Lane Departure Warning (LDW): Warns the driver if the vehicle drifts out of its lane unintentionally.", imageUrl: LD, videoId: "1094598142" },
   { text: "Pedestrian Collision Warning (PCW): Detects pedestrians and warns the driver of potential impacts.", imageUrl: PCW, videoId: "1094598114" },
-  { text: "Sudden Brake Detection (SBD): Provides an immediate warning if rapid Acceleration / deceleration is detected.", imageUrl: Brake, videoId: "1094605724" },
+  { text: "Sudden Brake Detection (SBD): Provides an immediate warning if rapid Acceleration / deceleration is detected.", imageUrl: Brake, videoId: "1193170124" },
 ];
 
 const dmsDetails = [
-  { text: "Phone Detection: Identifies if the driver is using a mobile phone while driving.", imageUrl: mobile, videoId: "1094598071" },
-  { text: "Seatbelt Detection: Checks if the driver is wearing their seatbelt.", imageUrl: Belt, videoId: "1094598059" },
-  { text: "Smoking Detection: Detects if the driver is smoking.", imageUrl: Smoke, videoId: "1094598084" },
-  { text: "Sleep Detection: Monitors the driver for signs of drowsiness or fatigue.", imageUrl: Sleep, videoId: "1094598050" },
-  { text: "Distraction Detection: Identifies general signs of driver distraction.", imageUrl: Distraction, videoId: "1094598038" },
+  { text: "Phone Detection: Identifies if the driver is using a mobile phone while driving.", imageUrl: mobile, videoId: "1193170119" },
+  { text: "Seatbelt Detection: Checks if the driver is wearing their seatbelt.", imageUrl: Belt, videoId: "1193170121" },
+  { text: "Smoking Detection: Detects if the driver is smoking.", imageUrl: Smoke, videoId: "1193170145" },
+  { text: "Sleep Detection: Monitors the driver for signs of drowsiness or fatigue.", imageUrl: Sleep, videoId: "1193170154" },
+  { text: "Distraction Detection: Identifies general signs of driver distraction.", imageUrl: Distraction, videoId: "1193170156" },
 ];
 
 const BenefitsSection: React.FC = () => {
