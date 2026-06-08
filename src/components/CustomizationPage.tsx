@@ -807,6 +807,7 @@ const CustomizationPage: React.FC = () => {
                 onClose={() => setShowEstimateModal(false)}
                 selectedSystem={selectedSystem}
                 selectedAccessories={selectedAccessories}
+                mainDeviceQuantity={1}
             />
         </div>
     );

@@ -1274,3 +1274,20 @@ export const products: Product[] = [
         }
     }
 ];
+
+// Apply overrides from local storage
+try {
+    const overridesStr = localStorage.getItem('productOverrides');
+    if (overridesStr) {
+        const overrides = JSON.parse(overridesStr);
+        products.forEach(p => {
+            if (overrides[p.id]) {
+                if (overrides[p.id].priceValue !== undefined) p.priceValue = overrides[p.id].priceValue;
+                if (overrides[p.id].installationFee !== undefined) p.installationFee = overrides[p.id].installationFee;
+                if (overrides[p.id].warranty !== undefined) p.warranty = overrides[p.id].warranty;
+            }
+        });
+    }
+} catch (e) {
+    console.error('Failed to load overrides', e);
+}

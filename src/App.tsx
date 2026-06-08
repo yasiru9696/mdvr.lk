@@ -5,6 +5,9 @@ import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 import ProductsPage from './components/ProductsPage';
 import CustomizationPage from './components/CustomizationPage';
+import GPSPage from './components/GPSPage';
+import GPSCustomizationPage from './components/GPSCustomizationPage';
+import AdminSettings from './components/AdminSettings';
 import Footer from './components/Footer';
 
 function App() {
@@ -19,6 +22,9 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/customize/:productId" element={<CustomizationPage />} />
+              <Route path="/gps" element={<GPSPage />} />
+              <Route path="/gps-customize/:productId" element={<GPSCustomizationPage />} />
+              <Route path="/admin" element={<AdminSettings />} />
             </Routes>
           </main>
           <Footer />

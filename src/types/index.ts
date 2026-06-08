@@ -36,7 +36,10 @@ export interface Product {
   features: string[];
   price: string;
   priceValue?: number; // Actual price for quotation calculations (not displayed)
+  installationFee?: number; // Specific installation fee for this item
   imageUrl: string;
+  tags?: string[]; // Used for multi-select filtering
+  warranty?: string; // Overridden warranty period
   specifications: {
     [key: string]: string;
   };
