@@ -32,7 +32,8 @@ export const gpsProducts: Product[] = [
         },
         compatibleWith: [
             'gps-acc-fuel-wireless',
-            'gps-acc-temp-wireless'
+            'gps-acc-temp-wireless',
+            'gps-acc-eye-sensor'
         ]
     },
     {
@@ -60,7 +61,8 @@ export const gpsProducts: Product[] = [
         },
         compatibleWith: [
             'gps-acc-fuel-wireless',
-            'gps-acc-temp-wireless'
+            'gps-acc-temp-wireless',
+            'gps-acc-eye-sensor'
         ]
     },
     {
@@ -98,7 +100,8 @@ export const gpsProducts: Product[] = [
             'gps-acc-door-wired',
             'gps-acc-temp-wired',
             'gps-acc-speed-buzzer',
-            'gps-acc-driver-id'
+            'gps-acc-driver-id',
+            'gps-acc-eye-sensor'
         ]
     },
     {
@@ -136,7 +139,8 @@ export const gpsProducts: Product[] = [
             'gps-acc-door-wired',
             'gps-acc-temp-wired',
             'gps-acc-speed-buzzer',
-            'gps-acc-driver-id'
+            'gps-acc-driver-id',
+            'gps-acc-eye-sensor'
         ]
     },
     {
@@ -190,7 +194,7 @@ export const gpsProducts: Product[] = [
             'RS485 Interface for fuel/temperature sensors',
             'Multiple Alerts (impounding, geo-fence, vibration, speeding)'
         ],
-        tags: ['4G', '2G', 'Fuel', 'Temperature', 'Waterproof'],
+        tags: ['4G', '2G', 'Fuel', 'Temperature', 'Waterproof', 'Audio'],
         specifications: {
             'Dimensions': '105 x 57 x 22 mm',
             'Weight': '117.6 g',
@@ -206,7 +210,7 @@ export const gpsProducts: Product[] = [
             'gps-acc-temp-wireless',
             'gps-acc-temp-wired',
             'gps-acc-speed-buzzer',
-            'gps-acc-driver-id'
+            'gps-acc-speaker-mic'
         ]
     },
     {
@@ -227,7 +231,7 @@ export const gpsProducts: Product[] = [
             'Internal GNSS and GSM High Gain antennas',
             'Crash detection, Towing detection, Auto Geofence'
         ],
-        tags: ['2G', 'Portable', 'Temperature'],
+        tags: ['2G', 'Portable', 'Temperature', 'Fuel'],
         specifications: {
             'Dimensions': '96.7 x 33.4 x 27.5 mm',
             'Connection': 'Cigarette lighter socket',
@@ -239,7 +243,9 @@ export const gpsProducts: Product[] = [
             'Bluetooth': '4.0 + LE'
         },
         compatibleWith: [
-            'gps-acc-temp-wireless'
+            'gps-acc-temp-wireless',
+            'gps-acc-eye-sensor',
+            'gps-acc-fuel-wireless'
         ]
     },
     {
@@ -293,7 +299,7 @@ export const gpsProducts: Product[] = [
             'Wide 9V-100V power supply range',
             'IP66 Waterproof rating'
         ],
-        tags: ['4G', '2G', 'Fuel', 'Temperature', 'Driver identification', 'Door', 'Waterproof'],
+        tags: ['4G', '2G', 'Fuel', 'Temperature', 'Driver identification', 'Door', 'Waterproof', 'Audio'],
         specifications: {
             'Dimensions': '99 x 54 x 19.5 mm',
             'Weight': '106 g',
@@ -310,7 +316,8 @@ export const gpsProducts: Product[] = [
             'gps-acc-door-wired',
             'gps-acc-temp-wired',
             'gps-acc-speed-buzzer',
-            'gps-acc-driver-id'
+            'gps-acc-driver-id',
+            'gps-acc-speaker-mic'
         ]
     },
     {
@@ -348,7 +355,8 @@ export const gpsProducts: Product[] = [
             'gps-acc-temp-wireless',
             'gps-acc-temp-wired',
             'gps-acc-speed-buzzer',
-            'gps-acc-driver-id'
+            'gps-acc-driver-id',
+            'gps-acc-eye-sensor'
         ]
     },
     {
@@ -387,7 +395,8 @@ export const gpsProducts: Product[] = [
             'gps-acc-door-wired',
             'gps-acc-temp-wired',
             'gps-acc-speed-buzzer',
-            'gps-acc-driver-id'
+            'gps-acc-driver-id',
+            'gps-acc-eye-sensor'
         ]
     },
     {
@@ -579,10 +588,37 @@ export const gpsProducts: Product[] = [
             'IP Rating': 'IP41'
         },
         compatibleWith: [
-            'gps-acc-temp-wireless'
+            'gps-acc-temp-wireless',
+            'gps-acc-eye-sensor',
+            'gps-acc-fuel-wireless'
         ]
     },
     // Accessories
+    {
+        id: 'gps-acc-eye-sensor',
+        name: 'Teltonika EYE Sensor(Temperature/Door)',
+        category: 'Accessories',
+        description: 'Bluetooth Low Energy ID beacon with temperature, humidity, movement, and magnet detection sensors. Designed for a low-cost fast and easy configuration to ensure timely monitoring and accountability. Perfect for cold chain, trailer door events, and delivery tracking.',
+        price: 'Rs 15,500',
+        priceValue: 15500,
+        installationFee: 1000,
+        imageUrl: '/img/eye-sensor.png',
+        features: [
+            '4 Sensors Set: Temperature, Humidity, Movement, Magnet detection',
+            'Long lifetime: 600 mAh capacity for 5+ years battery life',
+            'Water-resistant IP67 protection casing',
+            'Easy to use mobile app for configuration and data scanning',
+            'Supports iBeacon and Eddystone protocols'
+        ],
+        specifications: {
+            'Dimensions': '56.6 x 38 x 13 mm',
+            'Weight': '18 g',
+            'Battery': 'CR2450 Lithium Manganese Dioxide (600 mAh)',
+            'IP Rating': 'IP67',
+            'Bluetooth': '4.2 compliant, 5.2 certified (Up to 80m range)',
+            'Temperature Range': '-20°C to +60°C'
+        }
+    },
     {
         id: 'gps-acc-fuel-wireless',
         name: 'Wireless Fuel Sensor',
@@ -695,6 +731,25 @@ export const gpsProducts: Product[] = [
         specifications: {
             'Type': 'iButton / RFID Reader',
             'Compatibility': 'Universal'
+        }
+    },
+    {
+        id: 'gps-acc-speaker-mic',
+        name: 'Speaker and Mic',
+        category: 'Accessories',
+        description: 'External speaker and microphone for two-way audio communication. Perfect for driver monitoring, remote listen-in, and voice dispatch.',
+        price: 'Rs 4,500',
+        priceValue: 4500,
+        installationFee: 1000,
+        imageUrl: '/img/speaker-mic.png',
+        features: [
+            'Two-Way Audio Communication',
+            'Noise Cancellation',
+            'Clear Voice Dispatch'
+        ],
+        specifications: {
+            'Type': 'Audio Device',
+            'Compatibility': 'Audio Supported Devices'
         }
     }
 ];

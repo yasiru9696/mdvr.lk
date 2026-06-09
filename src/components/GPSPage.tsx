@@ -11,7 +11,7 @@ const GPSPage: React.FC = () => {
 
     const availableTags = [
         '2G', '4G', 'Portable', 'OBD',
-        'Fuel', 'Door', 'Temperature', 'Driver identification', 'Waterproof'
+        'Fuel', 'Door', 'Temperature', 'Driver identification', 'Waterproof', 'Audio'
     ];
 
     const toggleTag = (tag: string) => {

@@ -37,27 +37,104 @@ const GPSCustomizationPage: React.FC = () => {
         ? gpsProducts.filter(p => selectedSystem.compatibleWith?.includes(p.id))
         : [];
 
-    const checkWirelessLimitAbsolute = (newQty: number, accessoryId: string): number => {
-        if (!selectedSystem?.id.startsWith('teltonika')) return newQty;
-        const isWireless = accessoryId === 'gps-acc-fuel-wireless' || accessoryId === 'gps-acc-temp-wireless';
-        if (!isWireless) return newQty;
+    const checkAccessoryLimitAbsolute = (newQty: number, accessoryId: string): number => {
+        let maxQty = newQty;
 
-        const otherWirelessQty = selectedAccessories
-            .filter(a => (a.product.id === 'gps-acc-fuel-wireless' || a.product.id === 'gps-acc-temp-wireless') && a.product.id !== accessoryId)
-            .reduce((sum, a) => sum + a.quantity, 0);
-        
-        const limit = 4 * mainDeviceQuantity;
-        if (otherWirelessQty + newQty > limit) {
-            alert(`Teltonika devices support a maximum of 4 wireless accessories per device (Total limit: ${limit}).`);
-            return limit - otherWirelessQty;
+        // Wireless Limit (Teltonika only)
+        if (selectedSystem?.id.startsWith('teltonika')) {
+            const isWireless = accessoryId === 'gps-acc-fuel-wireless' || accessoryId === 'gps-acc-temp-wireless' || accessoryId === 'gps-acc-eye-sensor';
+            if (isWireless) {
+                const otherWirelessQty = selectedAccessories
+                    .filter(a => (a.product.id === 'gps-acc-fuel-wireless' || a.product.id === 'gps-acc-temp-wireless' || a.product.id === 'gps-acc-eye-sensor') && a.product.id !== accessoryId)
+                    .reduce((sum, a) => sum + a.quantity, 0);
+                
+                const limit = 4 * mainDeviceQuantity;
+                if (otherWirelessQty + maxQty > limit) {
+                    alert(`Teltonika devices support a maximum of 4 wireless accessories per device (Total limit: ${limit}).`);
+                    maxQty = limit - otherWirelessQty;
+                }
+            }
         }
-        return newQty;
+
+        // 1-Wire Limit
+        const isOneWire = accessoryId === 'gps-acc-temp-wired' || accessoryId === 'gps-acc-driver-id';
+        if (isOneWire) {
+            const otherOneWireQty = selectedAccessories
+                .filter(a => (a.product.id === 'gps-acc-temp-wired' || a.product.id === 'gps-acc-driver-id') && a.product.id !== accessoryId)
+                .reduce((sum, a) => sum + a.quantity, 0);
+            
+            const limit = 4 * mainDeviceQuantity;
+            if (otherOneWireQty + maxQty > limit) {
+                alert(`Devices support a maximum of 4 1-Wire accessories (Wired Temp / Driver ID) per device (Total limit: ${limit}).`);
+                maxQty = limit - otherOneWireQty;
+            }
+        }
+
+        // Speed Buzzer Limit
+        const isBuzzer = accessoryId === 'gps-acc-speed-buzzer';
+        if (isBuzzer) {
+            const otherBuzzerQty = selectedAccessories
+                .filter(a => a.product.id === 'gps-acc-speed-buzzer' && a.product.id !== accessoryId)
+                .reduce((sum, a) => sum + a.quantity, 0);
+            
+            const limit = 2 * mainDeviceQuantity;
+            if (otherBuzzerQty + maxQty > limit) {
+                alert(`Devices support a maximum of 2 Speed Buzzers per device (Total limit: ${limit}).`);
+                maxQty = limit - otherBuzzerQty;
+            }
+        }
+
+        // Wired Door Sensor Limit
+        const isDoor = accessoryId === 'gps-acc-door-wired';
+        if (isDoor) {
+            const otherDoorQty = selectedAccessories
+                .filter(a => a.product.id === 'gps-acc-door-wired' && a.product.id !== accessoryId)
+                .reduce((sum, a) => sum + a.quantity, 0);
+            
+            const limit = 3 * mainDeviceQuantity;
+            if (otherDoorQty + maxQty > limit) {
+                alert(`Devices support a maximum of 3 Wired Door Sensors per device (Total limit: ${limit}).`);
+                maxQty = limit - otherDoorQty;
+            }
+        }
+
+        // Speaker and Mic Limit
+        const isSpeakerMic = accessoryId === 'gps-acc-speaker-mic';
+        if (isSpeakerMic) {
+            const otherSpeakerMicQty = selectedAccessories
+                .filter(a => a.product.id === 'gps-acc-speaker-mic' && a.product.id !== accessoryId)
+                .reduce((sum, a) => sum + a.quantity, 0);
+            
+            const limit = 1 * mainDeviceQuantity;
+            if (otherSpeakerMicQty + maxQty > limit) {
+                alert(`Devices support a maximum of 1 Speaker and Mic set per device (Total limit: ${limit}).`);
+                maxQty = limit - otherSpeakerMicQty;
+            }
+        }
+
+        // Fuel Sensor Limit
+        const isFuelSensor = accessoryId === 'gps-acc-fuel-wireless';
+        if (isFuelSensor) {
+            const otherFuelQty = selectedAccessories
+                .filter(a => a.product.id === 'gps-acc-fuel-wireless' && a.product.id !== accessoryId)
+                .reduce((sum, a) => sum + a.quantity, 0);
+            
+            const maxPerDevice = selectedSystem?.id.startsWith('teltonika') ? 2 : 1;
+            const limit = maxPerDevice * mainDeviceQuantity;
+            
+            if (otherFuelQty + maxQty > limit) {
+                alert(`This device supports a maximum of ${maxPerDevice} Fuel Sensor(s) per device (Total limit: ${limit}).`);
+                maxQty = limit - otherFuelQty;
+            }
+        }
+
+        return maxQty;
     };
 
     const handleAddAccessory = (accessory: Product) => {
         const existing = selectedAccessories.find(a => a.product.id === accessory.id);
         if (existing) {
-            const cappedQty = checkWirelessLimitAbsolute(existing.quantity + 1, accessory.id);
+            const cappedQty = checkAccessoryLimitAbsolute(existing.quantity + 1, accessory.id);
             if (cappedQty === existing.quantity && existing.quantity + 1 > cappedQty) return;
             
             setSelectedAccessories(selectedAccessories.map(a =>
@@ -66,7 +143,7 @@ const GPSCustomizationPage: React.FC = () => {
                     : a
             ));
         } else {
-            const cappedQty = checkWirelessLimitAbsolute(mainDeviceQuantity, accessory.id);
+            const cappedQty = checkAccessoryLimitAbsolute(mainDeviceQuantity, accessory.id);
             if (cappedQty <= 0) return;
             setSelectedAccessories([...selectedAccessories, { product: accessory, quantity: cappedQty }]);
         }
@@ -81,7 +158,7 @@ const GPSCustomizationPage: React.FC = () => {
             if (a.product.id === accessoryId) {
                 let newQuantity = Math.max(1, a.quantity + delta);
                 if (delta > 0) {
-                    newQuantity = Math.max(a.quantity, checkWirelessLimitAbsolute(newQuantity, accessoryId));
+                    newQuantity = Math.max(a.quantity, checkAccessoryLimitAbsolute(newQuantity, accessoryId));
                 }
                 return { ...a, quantity: newQuantity };
             }
@@ -94,7 +171,7 @@ const GPSCustomizationPage: React.FC = () => {
             if (a.product.id === accessoryId) {
                 let newQuantity = Math.max(1, value);
                 if (newQuantity > a.quantity) {
-                    newQuantity = Math.max(a.quantity, checkWirelessLimitAbsolute(newQuantity, accessoryId));
+                    newQuantity = Math.max(a.quantity, checkAccessoryLimitAbsolute(newQuantity, accessoryId));
                 }
                 return { ...a, quantity: newQuantity };
             }

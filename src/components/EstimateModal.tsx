@@ -270,7 +270,7 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                             {selectedAccessories.map((acc, index) => (
                                 <tr key={index} className="border-b border-gray-200">
                                     <td className="py-3 px-4">
-                                        <div className="font-semibold text-gray-800">{acc.product.name}</div>
+                                        <div className="font-semibold text-gray-800">{acc.product.name.replace('(Temperature/Door)', '').trim()}</div>
                                     </td>
                                     <td className="text-center py-3 px-4">{acc.quantity}.00</td>
                                     <td className="text-right py-3 px-4 text-gray-600">{acc.product.priceValue ? formatPrice(acc.product.priceValue) : '-'}</td>
@@ -313,7 +313,7 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                                     return (
                                         <tr key={`inst-${index}`} className="border-b border-gray-200 bg-gray-50">
                                             <td className="py-3 px-4">
-                                                <div className="font-semibold text-gray-800">{acc.product.name} Installation Fee</div>
+                                                <div className="font-semibold text-gray-800">{acc.product.name.replace('(Temperature/Door)', '').trim()} Installation Fee</div>
                                             </td>
                                             <td className="text-center py-3 px-4">{acc.quantity}.00</td>
                                             <td className="text-right py-3 px-4 text-gray-600">{formatPrice(acc.product.installationFee)}</td>
@@ -383,7 +383,7 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                                             <ul className="list-[circle] list-inside ml-4 mt-0.5 mb-1">
                                                 <li>{selectedSystem.name}: {getWarrantyPeriod(selectedSystem)}</li>
                                                 {selectedAccessories.map((acc, idx) => (
-                                                    <li key={`war-${idx}`}>{acc.product.name}: {getWarrantyPeriod(acc.product)}</li>
+                                                    <li key={`war-${idx}`}>{acc.product.name.replace('(Temperature/Door)', '').trim()}: {getWarrantyPeriod(acc.product)}</li>
                                                 ))}
                                             </ul>
                                             <span className="text-[10.5px]">This warranty excludes sensor batteries and consumable items.</span>
@@ -410,13 +410,13 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                                 <div>
                                     <h5 className="font-bold text-gray-800 mb-0.5">Technical Support</h5>
                                     <ul className="list-disc list-inside ml-2 text-gray-600">
-                                        <li><span className="font-medium text-gray-700">Support Availability</span> - Online support: 18 hours per day, 6 days per week (Telephone support: Available during non-working hours for urgent assistance).</li>
+                                        <li><span className="font-medium text-gray-700">Support Availability</span> - Online Support: 18 hrs/day, 6 days/week (urgent phone support available after hours).</li>
                                     </ul>
                                 </div>
                             </div>
 
-                            <p className="mt-2.5 italic text-gray-600">
-                                We look forward to the opportunity of doing business with you. Please note that installation will commence promptly upon receipt of your official Purchase Order (PO).
+                            <p className="mt-2.5 text-center font-bold text-gray-700">
+                                We look forward to doing business with you. Installation will commence upon receipt of your official Purchase Order (PO).
                             </p>
                         </div>
                     ) : (
