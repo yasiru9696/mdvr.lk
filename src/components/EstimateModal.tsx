@@ -96,7 +96,8 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-        return `EST-MobileDVR${year}${month}${day}${random}`;
+        const prefix = selectedSystem?.category === 'GPS Trackers' ? 'EST-GeoidGPS' : 'EST-MobileDVR';
+        return `${prefix}${year}${month}${day}${random}`;
     };
 
     const formatDate = (date: Date) => {
