@@ -189,7 +189,7 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                 {/* Header Controls */}
                 <div className="sticky top-0 bg-white border-b border-gray-200 z-10 flex flex-col">
                     <div className="px-6 py-4 flex justify-between items-center">
-                        <h2 className="text-2xl font-bold text-gray-800">Configuration Estimate</h2>
+                        <h2 className="text-2xl font-bold text-gray-800">Estimate</h2>
                         <div className="flex gap-2 items-center">
                             <div className="flex gap-3 mr-2 bg-gray-50 px-3 py-1.5 rounded border border-gray-200">
                                 <label className="flex items-center gap-1.5 text-sm font-semibold text-gray-700 cursor-pointer">
@@ -209,12 +209,12 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                             </div>
                             <button
                                 onClick={() => setShowCustomerForm(!showCustomerForm)}
-                                className="px-3 py-1.5 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50 mr-2"
+                                className="px-3 py-1.5 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50 mr-2 whitespace-nowrap"
                             >
-                                {showCustomerForm ? 'Hide Customer Details' : 'Add Customer Details'}
+                                {showCustomerForm ? 'Hide Customer' : 'Add Customer'}
                             </button>
                             <div className="flex items-center gap-2 mr-2">
-                                <label className="text-sm font-semibold text-gray-700">Sub. Fee (Rs):</label>
+                                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Sub. Fee:</label>
                                 <input
                                     type="text"
                                     value={subscriptionFee}
@@ -224,10 +224,10 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                             </div>
                             <button
                                 onClick={handleDownloadPDF}
-                                className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+                                className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors whitespace-nowrap"
                             >
                                 <Download size={18} />
-                                Download PDF
+                                Download
                             </button>
                             <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                                 <X size={24} className="text-gray-600" />
