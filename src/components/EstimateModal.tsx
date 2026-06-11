@@ -36,6 +36,11 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
 }) => {
     const estimateRef = useRef<HTMLDivElement>(null);
     const [subscriptionFee, setSubscriptionFee] = useState('1,500.00');
+    const [customerName, setCustomerName] = useState('');
+    const [customerAddress1, setCustomerAddress1] = useState('');
+    const [customerAddress2, setCustomerAddress2] = useState('');
+    const [customerTaxId, setCustomerTaxId] = useState('');
+    const [showCustomerForm, setShowCustomerForm] = useState(false);
 
     if (!isOpen) return null;
 
@@ -180,36 +185,52 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header Controls */}
-                <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center z-10">
-                    <h2 className="text-2xl font-bold text-gray-800">Configuration Estimate</h2>
-                    <div className="flex gap-2 items-center">
-                        <div className="flex items-center gap-2 mr-2">
-                            <label className="text-sm font-semibold text-gray-700">Sub. Fee (Rs):</label>
-                            <input
-                                type="text"
-                                value={subscriptionFee}
-                                onChange={(e) => setSubscriptionFee(e.target.value)}
-                                className="border border-gray-300 rounded px-2 py-1.5 w-24 text-sm text-gray-800"
-                            />
+                <div className="sticky top-0 bg-white border-b border-gray-200 z-10 flex flex-col">
+                    <div className="px-6 py-4 flex justify-between items-center">
+                        <h2 className="text-2xl font-bold text-gray-800">Configuration Estimate</h2>
+                        <div className="flex gap-2 items-center">
+                            <button
+                                onClick={() => setShowCustomerForm(!showCustomerForm)}
+                                className="px-3 py-1.5 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50 mr-2"
+                            >
+                                {showCustomerForm ? 'Hide Customer Details' : 'Add Customer Details'}
+                            </button>
+                            <div className="flex items-center gap-2 mr-2">
+                                <label className="text-sm font-semibold text-gray-700">Sub. Fee (Rs):</label>
+                                <input
+                                    type="text"
+                                    value={subscriptionFee}
+                                    onChange={(e) => setSubscriptionFee(e.target.value)}
+                                    className="border border-gray-300 rounded px-2 py-1.5 w-24 text-sm text-gray-800 bg-white"
+                                />
+                            </div>
+                            <button
+                                onClick={handleDownloadPDF}
+                                className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+                            >
+                                <Download size={18} />
+                                Download PDF
+                            </button>
+                            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                <X size={24} className="text-gray-600" />
+                            </button>
                         </div>
-                        <button
-                            onClick={handleDownloadPDF}
-                            className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
-                        >
-                            <Download size={18} />
-                            Download PDF
-                        </button>
-                        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                            <X size={24} className="text-gray-600" />
-                        </button>
                     </div>
+                    {showCustomerForm && (
+                        <div className="px-6 pb-4 flex gap-4 bg-gray-50 border-t border-gray-100 pt-4">
+                            <input placeholder="Customer Name" value={customerName} onChange={e => setCustomerName(e.target.value)} className="border border-gray-300 rounded px-2 py-1.5 text-sm text-gray-800 placeholder-gray-500 bg-white flex-1" />
+                            <input placeholder="Address Line 1" value={customerAddress1} onChange={e => setCustomerAddress1(e.target.value)} className="border border-gray-300 rounded px-2 py-1.5 text-sm text-gray-800 placeholder-gray-500 bg-white flex-1" />
+                            <input placeholder="Address Line 2" value={customerAddress2} onChange={e => setCustomerAddress2(e.target.value)} className="border border-gray-300 rounded px-2 py-1.5 text-sm text-gray-800 placeholder-gray-500 bg-white flex-1" />
+                            <input placeholder="Tax ID" value={customerTaxId} onChange={e => setCustomerTaxId(e.target.value)} className="border border-gray-300 rounded px-2 py-1.5 text-sm text-gray-800 placeholder-gray-500 bg-white flex-1" />
+                        </div>
+                    )}
                 </div>
 
                 {/* Estimate Content */}
                 <div ref={estimateRef} className="p-8 bg-white text-gray-900">
                     <div id="estimate-main">
                         {/* Company Header */}
-                    <div className="flex justify-between items-start mb-8">
+                    <div className="flex justify-between items-start mb-4">
                         <div>
                             <img
                                 src="/geoid-logo.png"
@@ -228,20 +249,33 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                     </div>
 
                     {/* Watermark & Dates */}
-                    <div className="mb-8">
-                        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
-                            <p className="text-sm text-yellow-800 font-semibold">
+                    <div className="mb-6">
+                        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-2 mb-4">
+                            <p className="text-xs text-yellow-800 font-semibold">
                                 ⚠️ This is a system-generated estimate. Please contact us for an official estimate.
                             </p>
                         </div>
-                        <div className="flex justify-end gap-8">
-                            <div>
-                                <span className="text-gray-600 text-sm">Estimate Date: </span>
-                                <span className="font-semibold text-sm">{formatDate(today)}</span>
-                            </div>
-                            <div>
-                                <span className="text-gray-600 text-sm">Expiry Date: </span>
-                                <span className="font-semibold text-sm">{formatDate(expiryDate)}</span>
+                        <div className="flex justify-between items-end">
+                            {showCustomerForm && (customerName || customerAddress1 || customerAddress2 || customerTaxId) ? (
+                                <div className="text-gray-700">
+                                    <p className="text-sm text-gray-500 mb-1">Bill To</p>
+                                    {customerName && <p className="text-sm font-bold text-gray-900">{customerName}</p>}
+                                    {customerAddress1 && <p className="text-sm">{customerAddress1}</p>}
+                                    {customerAddress2 && <p className="text-sm">{customerAddress2}</p>}
+                                    {customerTaxId && <p className="text-sm mt-1">Tax ID : {customerTaxId}</p>}
+                                </div>
+                            ) : (
+                                <div></div>
+                            )}
+                            <div className="flex justify-end gap-8 text-right">
+                                <div>
+                                    <span className="text-gray-600 text-sm">Estimate Date : </span>
+                                    <span className="font-semibold text-sm">{formatDate(today)}</span>
+                                </div>
+                                <div>
+                                    <span className="text-gray-600 text-sm">Expiry Date : </span>
+                                    <span className="font-semibold text-sm">{formatDate(expiryDate)}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
