@@ -41,6 +41,8 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
     const [customerAddress2, setCustomerAddress2] = useState('');
     const [customerTaxId, setCustomerTaxId] = useState('');
     const [showCustomerForm, setShowCustomerForm] = useState(false);
+    const [addVAT, setAddVAT] = useState(true);
+    const [addSSCL, setAddSSCL] = useState(true);
 
     if (!isOpen) return null;
 
@@ -83,10 +85,10 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
     const subtotal = systemTotal + accessoriesTotal + installationFee;
 
     // Calculate SSCL (2.5% of subtotal)
-    const sscl = subtotal * 0.025;
+    const sscl = addSSCL ? subtotal * 0.025 : 0;
 
     // Calculate VAT (18% of subtotal + SSCL)
-    const vat = (subtotal + sscl) * 0.18;
+    const vat = addVAT ? (subtotal + sscl) * 0.18 : 0;
 
     // Calculate final total
     const total = subtotal + sscl + vat;
@@ -189,6 +191,22 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                     <div className="px-6 py-4 flex justify-between items-center">
                         <h2 className="text-2xl font-bold text-gray-800">Configuration Estimate</h2>
                         <div className="flex gap-2 items-center">
+                            <div className="flex gap-3 mr-2 bg-gray-50 px-3 py-1.5 rounded border border-gray-200">
+                                <label className="flex items-center gap-1.5 text-sm font-semibold text-gray-700 cursor-pointer">
+                                    <input type="checkbox" checked={addVAT} onChange={(e) => {
+                                        setAddVAT(e.target.checked);
+                                        if (!e.target.checked) setAddSSCL(false);
+                                    }} className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+                                    VAT
+                                </label>
+                                <label className="flex items-center gap-1.5 text-sm font-semibold text-gray-700 cursor-pointer">
+                                    <input type="checkbox" checked={addSSCL} onChange={(e) => {
+                                        setAddSSCL(e.target.checked);
+                                        if (e.target.checked) setAddVAT(true);
+                                    }} className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+                                    SSCL
+                                </label>
+                            </div>
                             <button
                                 onClick={() => setShowCustomerForm(!showCustomerForm)}
                                 className="px-3 py-1.5 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50 mr-2"
@@ -368,14 +386,18 @@ const EstimateModal: React.FC<EstimateModalProps> = ({
                                 <span className="text-gray-700">Sub Total</span>
                                 <span className="font-semibold">{formatPrice(subtotal)}</span>
                             </div>
-                            <div className="flex justify-between py-2 border-b border-gray-300">
-                                <span className="text-gray-700">SSCL (2.5%)</span>
-                                <span className="font-semibold">{formatPrice(sscl)}</span>
-                            </div>
-                            <div className="flex justify-between py-2 border-b border-gray-300">
-                                <span className="text-gray-700">VAT (18%)</span>
-                                <span className="font-semibold">{formatPrice(vat)}</span>
-                            </div>
+                            {addSSCL && (
+                                <div className="flex justify-between py-2 border-b border-gray-300">
+                                    <span className="text-gray-700">SSCL (2.5%)</span>
+                                    <span className="font-semibold">{formatPrice(sscl)}</span>
+                                </div>
+                            )}
+                            {addVAT && (
+                                <div className="flex justify-between py-2 border-b border-gray-300">
+                                    <span className="text-gray-700">VAT (18%)</span>
+                                    <span className="font-semibold">{formatPrice(vat)}</span>
+                                </div>
+                            )}
                             <div className="flex justify-between py-3 bg-gray-100 px-3 rounded mt-2">
                                 <span className="text-lg font-bold text-gray-800">Total</span>
                                 <span className="text-lg font-bold text-gray-800">{formatPrice(total)}</span>
