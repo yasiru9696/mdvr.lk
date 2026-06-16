@@ -157,7 +157,7 @@ export const products: Product[] = [
         resolution: 'ADAS: 1920P @ 25fps | AHD: 1080P | DMS: 800P',
         storage: '2x MicroSD (up to 256GB each)',
         price: 'Contact for Quote',
-        priceValue: 137534,
+        priceValue: 151975,
         imageUrl: '/img/ad-plus.png',
         features: [
             'Embedded Linux operating system',
@@ -183,7 +183,7 @@ export const products: Product[] = [
             'CAN bus support (J1939 protocol)',
             'Wide temperature range: -40°C to +70°C'
         ],
-        compatibleWith: ['c29n-dms-camera', 'cp7-display', 'camera-extended-cable', 'ahd-outdoor-camera', '720p-ahd-outdoor-camera', 'kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'],
+        compatibleWith: ['c29n-dms-camera', 'cp7-display', 'camera-extended-cable', 'ahd-outdoor-camera', '720p-ahd-outdoor-camera', '720p-ahd-indoor-camera-with-mic', 'kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'],
         specifications: {
             'Model': 'AD-PLUS 2.0',
             'Operating System': 'Embedded Linux',
@@ -248,7 +248,7 @@ export const products: Product[] = [
         resolution: 'AHD: 1080P @ 25fps | IPC: 1080P @ 30fps',
         storage: '2x MicroSD (up to 512GB each)',
         price: 'Contact for Quote',
-        priceValue: 95133,
+        priceValue: 89697,
         imageUrl: '/img/f6n.png',
         features: [
             'Linux operating system',
@@ -270,7 +270,7 @@ export const products: Product[] = [
             'Compact design: 195.6 x 120 x 35mm',
             'Operating temperature: -30°C to +70°C'
         ],
-        compatibleWith: ['ca29p-dms-camera', '1080p-ipc-waterproof-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera', 'kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'],
+        compatibleWith: ['ca29p-dms-camera', '1080p-ipc-waterproof-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera', '720p-ahd-indoor-camera-with-mic', 'kingston-512gb-microsd', 'kingston-256gb-microsd', 'kingston-128gb-microsd'],
         specifications: {
             'Model': 'F6N-TKH0401',
             'Operating System': 'Linux',
@@ -333,7 +333,7 @@ export const products: Product[] = [
             'Dual SIM card slots',
             'Operating temperature: -40°C to +70°C'
         ],
-        compatibleWith: ['1080p-ipc-waterproof-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera', 'ca20s-adas-camera', 'cp4-display-kit', 'wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb', 'dsm-camera-kit'],
+        compatibleWith: ['1080p-ipc-waterproof-camera', 'ahd-outdoor-camera', 'ca46-blind-spot-camera', '720p-ahd-outdoor-camera', '720p-ahd-indoor-camera-with-mic', 'ca20s-adas-camera', 'cp4-display-kit', 'wd-blue-500gb-hdd', 'wd-scorpio-blue-1tb', 'dsm-camera-kit'],
         specifications: {
             'Model': 'X3N',
             'Operating System': 'Linux',
@@ -419,7 +419,7 @@ export const products: Product[] = [
         resolution: '1280x800 @ 30FPS',
         storage: 'N/A',
         price: 'Contact for Quote',
-        priceValue: 44450,
+        priceValue: 51493,
         imageUrl: '/img/c29n-dms.png',
         features: [
             'Compatible with AD-PLUS 2.0 Mobile DVR',
@@ -462,7 +462,7 @@ export const products: Product[] = [
         resolution: '1280x800 @ 30FPS',
         storage: 'N/A',
         price: 'Contact for Quote',
-        priceValue: 28762,
+        priceValue: 33401,
         imageUrl: '/img/ca29p-dms.png',
         features: [
             'Compatible with C6 Lite-S AI Mobile DVR System',
@@ -630,7 +630,7 @@ export const products: Product[] = [
         resolution: '1280x720 (720P)',
         storage: 'N/A',
         price: 'Contact for Quote',
-        priceValue: 15688,
+        priceValue: 16700,
         imageUrl: '/img/720p-ahd-outdoor.png',
         features: [
             '1/3" Sony Starvis CMOS Progressive scan sensor',
@@ -674,6 +674,50 @@ export const products: Product[] = [
             'Waterproof Rating': 'IP67 (Exterior)',
             'Dimensions': '75mm (D) x 65.1mm (W) x 73.7mm (H)',
             'Weight': '280g'
+        }
+    },
+    {
+        id: '720p-ahd-indoor-camera-with-mic',
+        name: '720P AHD Indoor Camera (with Mic)',
+        category: 'Cameras & Accessories',
+        description: '720P AHD indoor camera with built-in microphone. Features 1/3" SONY 1.27 Megapixel progressive scan CMOS sensor, 800TVL resolution, aviation connector, and shock-proof design. Includes Auto Electronic Shutter, Auto White Balance, and Day/Night functionality.',
+        channels: 1,
+        resolution: '800TVL (720P)',
+        storage: 'N/A',
+        price: 'Contact for Quote',
+        priceValue: 16700,
+        imageUrl: '/img/720p-ahd-indoor.png',
+        features: [
+            '1/3" SONY 1.27M pixels CMOS',
+            '800TVL Resolution',
+            'Built-in Microphone',
+            'Aviation connector',
+            'Auto Electronic Shutter',
+            'Auto White Balance, Day/Night',
+            'High speed, long distance real-time transmission',
+            'Shock-proof design',
+            'IR Distance: 3-5m'
+        ],
+        specifications: {
+            'Model': '720P AHD Indoor Camera (with Mic)',
+            'Type': 'AHD Indoor Camera',
+            'Sensor': '1/3" SONY 1.27M pixels CMOS',
+            'Resolution': '800TVL (720P)',
+            'Format': 'NTSC/PAL',
+            'Minimum Illumination': '0Lux (IR on)',
+            'Synchronizing System': 'Internal Synchronizing',
+            'S/N': '≥50dB (AGC off)',
+            'Lens': '2.5mm/2.8mm/3.6mm/6.0mm M12 lens optional',
+            'Electronic Shutter': 'Auto',
+            'White Balance Mode': 'Auto',
+            'Colour To Black': 'Auto',
+            'Gamma Correction': '0.45',
+            'IR Distance': '3-5m',
+            'Video Output': '1.0Vpp video output, 75Ω, 4-pin aviation cable',
+            'Power': '120mA/DC12V ±5%',
+            'Consumption (Max.)': '210 ±10mA (IR on)',
+            'Working Temperature': '-20°C ~ 55°C / 0%-90%',
+            'Dimension': 'ø69 x 55.5mm'
         }
     },
     {
