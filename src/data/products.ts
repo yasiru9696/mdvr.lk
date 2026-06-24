@@ -1325,6 +1325,8 @@ try {
     if (overridesStr) {
         const overrides = JSON.parse(overridesStr);
         products.forEach(p => {
+            p.originalPriceValue = p.priceValue;
+            p.originalInstallationFee = p.installationFee;
             if (overrides[p.id]) {
                 if (overrides[p.id].priceValue !== undefined) p.priceValue = overrides[p.id].priceValue;
                 if (overrides[p.id].installationFee !== undefined) p.installationFee = overrides[p.id].installationFee;

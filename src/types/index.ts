@@ -36,7 +36,9 @@ export interface Product {
   features: string[];
   price: string;
   priceValue?: number; // Actual price for quotation calculations (not displayed)
+  originalPriceValue?: number; // Stores the original hardcoded price before overrides
   installationFee?: number; // Specific installation fee for this item
+  originalInstallationFee?: number; // Stores the original hardcoded installation fee before overrides
   imageUrl: string;
   tags?: string[]; // Used for multi-select filtering
   warranty?: string; // Overridden warranty period

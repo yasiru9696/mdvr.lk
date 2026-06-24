@@ -47,7 +47,7 @@ const AdminSettings: React.FC = () => {
                 </td>
                 <td className="p-3">
                     <div className="flex flex-col">
-                        <span className="text-xs text-gray-500 mb-1">Default: Rs. {product.priceValue || 0}</span>
+                        <span className="text-xs text-gray-500 mb-1">Default: Rs. {product.originalPriceValue !== undefined ? product.originalPriceValue : (product.priceValue || 0)}</span>
                         <input
                             type="number"
                             className="bg-dark-900 border border-dark-600 rounded px-2 py-1 text-sm text-white focus:border-primary-500 outline-none w-32"
@@ -58,7 +58,7 @@ const AdminSettings: React.FC = () => {
                 </td>
                 <td className="p-3">
                     <div className="flex flex-col">
-                        <span className="text-xs text-gray-500 mb-1">Default: Rs. {product.installationFee || 0}</span>
+                        <span className="text-xs text-gray-500 mb-1">Default: Rs. {product.originalInstallationFee !== undefined ? product.originalInstallationFee : (product.installationFee || 0)}</span>
                         <input
                             type="number"
                             className="bg-dark-900 border border-dark-600 rounded px-2 py-1 text-sm text-white focus:border-primary-500 outline-none w-32"
